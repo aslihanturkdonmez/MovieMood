@@ -1,13 +1,13 @@
 import { Text } from 'react-native'
 import React from 'react'
 
-const CustomText = ({children, props}) => {
+const CustomText = (props) => {
   return (
       <Text 
-        {...props} 
+        {...props}
         allowFontScaling={false}
       >
-        {children}
+        {props.children}
       </Text>
   )
 }
