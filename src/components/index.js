@@ -3,6 +3,7 @@ import Text from './Text';
 import Header from './Header';
 import MovieCard from './MovieCard';
 import TextInput from './TextInput';
+import SearchBar from './SearchBar';
 
 export {
     Container,
@@ -10,4 +11,6 @@ export {
     Header,
     MovieCard,
     TextInput,
+    SearchBar,
+
 }
