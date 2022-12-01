@@ -4,7 +4,7 @@ export default StyleSheet.create({
     container: ({safeAreaInsets}) => ({
         flexDirection:'row',
         justifyContent:'center',
-        paddingTop:safeAreaInsets.top,
+        paddingTop: Math.max(safeAreaInsets.top + 5, 10),
         marginBottom:10,
     }),
     header:{
