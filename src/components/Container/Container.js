@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Container = ({children, style}) => {
   return (
-    <View style={[styles({safeAreaInsets:useSafeAreaInsets()}).container, style]}>
+    <View style={[styles.container, style]}>
         {children}
     </View>
   )
