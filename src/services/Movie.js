@@ -1,5 +1,5 @@
 import Config from 'react-native-config';
-import { queries } from './constants';
+import { baseURL, queries } from './constants';
 import callApi from './index';
 
 export const fetchMovies = async ({search, page}) => {
@@ -8,7 +8,8 @@ export const fetchMovies = async ({search, page}) => {
             [queries.apiKey]: Config.API_KEY,
             [queries.search]: search,
             [queries.page]: page,
-        }
+        },
+        baseURL,
     });
     return res;
 };

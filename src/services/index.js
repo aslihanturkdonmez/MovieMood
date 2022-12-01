@@ -1,8 +1,6 @@
 import axios from "axios";
-import { baseURL, queries } from "./constants";
-import Config from "react-native-config";
 
-const apiService = async ({ url, method = 'get', params }) => {
+const apiService = async ({ url, method = 'get', params, baseURL }) => {
     try {
         const res = await axios({
             url,
