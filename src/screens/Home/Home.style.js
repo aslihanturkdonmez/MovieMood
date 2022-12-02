@@ -6,5 +6,11 @@ export default StyleSheet.create({
     },
     itemSeparator:{
         height:12,
+    },
+    list:{ 
+        flex: 1 
+    },
+    footerContainer:{
+        alignItems:'center',
     }
 })
