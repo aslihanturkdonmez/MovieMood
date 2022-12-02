@@ -8,24 +8,26 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Home = () => {
   const { bottom } = useSafeAreaInsets();
-  const [searchText, setSearchText] = useState("ask");
-  const [page, setPage] = useState(1);
+  const [searchText, setSearchText] = useState("");
+  const [pageNo, setPageNo] = useState(1);
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshLoading, setRefreshLoading] = useState(false);
   const [footerLoader, setFooterLoader] = useState(false);
   const [lastSearchedMovie, setLastSearchedMovie] = useState(null);
+  const [searchMovie, setSearchMovie] = useState("");
+  const [reachEnd, setReachEnd] = useState(false);
 
   useEffect(() => {
-    getMovies();
-  }, [page]);
+      getMovies({});
+  }, []);
 
-  const getMovies = async (refreshState) => {
-    const res = await fetchMovies({ search: searchText, page });
-    setLastSearchedMovie(searchText);
+  const getMovies = async ({refreshState = false, search = searchMovie , page = pageNo}) => {
+    console.log(search, " ", page, " ", refreshState);
+    const res = await fetchMovies({ search, page });
+    setLastSearchedMovie(search);
     if (res.status === 200) {
       if (res.data.Response === ResponseStatus.success) {
-
         if (refreshState) {
           console.log(res.data.Search);
           setMovies(res.data.Search)
@@ -33,7 +35,13 @@ const Home = () => {
           console.log([...res.data.Search, ...movies]);
           setMovies([...movies, ...res.data.Search]);
         }
+      }else if(page > 1){
+        setReachEnd(true);
+      }else{
+        setMovies([]);
       }
+    }else{
+      setMovies([]);
     }
     setFooterLoader(false);
     setLoading(false);
@@ -41,20 +49,22 @@ const Home = () => {
 
   const onRefresh = async () => {
     setRefreshLoading(true);
-    await getMovies(true);
+    await getMovies({refreshState: true });
     setRefreshLoading(false);
   }
 
   const onEndReached = () => {
-    if (page >= 100) return;
+    if (pageNo >= 100 || reachEnd) return;
     setFooterLoader(true);
-    setPage(page + 1);
+    setPageNo(pageNo + 1);
+    getMovies({page: pageNo+1});
   }
 
-  const onPressSearch = async () => {
+  const onPressSearch = () => {
     if (lastSearchedMovie === searchText) return;
-    if (!searchText || searchText.trim() === '') return;
-    await getMovies(true);
+    setSearchMovie(searchText);
+    setPageNo(1);
+    getMovies({refreshState:true, search:searchText, page:1});
   }
 
   const renderItem = ({ item }) => {
@@ -75,11 +85,16 @@ const Home = () => {
 
   const renderListFooterComponent = () => {
     return (
-      <View style={{ paddingVertical: Math.max(12, bottom) }}>
+      <View style={[styles.footerContainer, { paddingVertical: Math.max(12, bottom) }]}>
         {
-          footerLoader ?
+          footerLoader && movies.length > 10 ?
             <ActivityIndicator size={'small'} color='black' />
             : null
+        }
+        {
+          movies.length && !footerLoader ?
+          <Text>You have viewed all results.</Text>
+          : null
         }
       </View>
     )
@@ -112,7 +127,7 @@ const Home = () => {
         stickyHeaderIndices={[0]}
         stickyHeaderHiddenOnScroll={true}
         ListFooterComponent={renderListFooterComponent}
-        style={{ flex: 1 }}
+        style={styles.list}
       />
 
     </Container>
