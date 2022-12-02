@@ -6,7 +6,7 @@ import { fetchMovies } from '../../services/Movie';
 import styles from './Home.style';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const Home = () => {
+const Home = ({navigation}) => {
   const { bottom } = useSafeAreaInsets();
   const [searchText, setSearchText] = useState("");
   const [pageNo, setPageNo] = useState(1);
@@ -65,8 +65,12 @@ const Home = () => {
     getMovies({refreshState:true, search:searchText, page:1});
   }
 
+  const onPressMovie = (movieId) => {
+    navigation.navigate('MovieDetail', {movieId})
+  }
+
   const renderItem = ({ item }) => {
-    return <MovieCard movie={item} />
+    return <MovieCard movie={item} onPressMovie={onPressMovie} />
   }
 
   const renderListEmptyComponent = () => {

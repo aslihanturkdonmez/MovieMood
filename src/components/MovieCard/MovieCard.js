@@ -1,13 +1,13 @@
-import { View } from 'react-native';
+import { View, TouchableWithoutFeedback } from 'react-native';
 import React from 'react';
 import styles from './MovieCard.style';
 import Text from '../Text';
 import ProgressiveImage from '../ProgressiveImage';
 
-const MovieCard = ({ movie }) => {
+const MovieCard = ({ movie, onPressMovie }) => {
 
   return (
-    <View style={styles.container}>
+    <TouchableWithoutFeedback style={styles.container} onPress={() =>onPressMovie(movie.imdbID)}>
       <View style={styles.innerContainer}>
         <ProgressiveImage
           source={{ uri: movie.Poster }}
@@ -23,7 +23,7 @@ const MovieCard = ({ movie }) => {
           </View>
         </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   )
 }
 
