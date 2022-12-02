@@ -65,8 +65,8 @@ const Home = ({navigation}) => {
     getMovies({refreshState:true, search:searchText, page:1});
   }
 
-  const onPressMovie = (movieId) => {
-    navigation.navigate('MovieDetail', {movieId})
+  const onPressMovie = (movieId, movieName) => {
+    navigation.navigate('MovieDetail', {movieId, movieName})
   }
 
   const renderItem = ({ item }) => {
