@@ -23,16 +23,14 @@ const Home = () => {
   }, []);
 
   const getMovies = async ({refreshState = false, search = searchMovie , page = pageNo}) => {
-    console.log(search, " ", page, " ", refreshState);
+    setReachEnd(false);
     const res = await fetchMovies({ search, page });
     setLastSearchedMovie(search);
     if (res.status === 200) {
       if (res.data.Response === ResponseStatus.success) {
         if (refreshState) {
-          console.log(res.data.Search);
           setMovies(res.data.Search)
         } else {
-          console.log([...res.data.Search, ...movies]);
           setMovies([...movies, ...res.data.Search]);
         }
       }else if(page > 1){
