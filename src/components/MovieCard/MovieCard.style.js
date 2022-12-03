@@ -2,13 +2,16 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
     container:{
-        marginHorizontal:10, 
-        borderWidth:1, 
-        borderRadius:8, 
-        borderColor:'#cecece',
+
     },
     innerContainer:{
         flexDirection:'row',
+        marginTop:10,
+        backgroundColor:'rgba(34,44,80,0.5)',
+        borderRadius:8,
+        marginHorizontal:10, 
+        borderWidth:1,
+        borderColor:'rgba(34,44,80,1)'
     },
     img:{
         width:85, 
