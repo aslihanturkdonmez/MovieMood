@@ -10,7 +10,6 @@ export default StyleSheet.create({
     innerContainer:{
         alignItems:'center', 
         flexDirection:'row', 
-        paddingVertical:10, 
         borderRadius:12, 
         paddingHorizontal:12, 
         backgroundColor:colors.searhBar, 
@@ -24,7 +23,8 @@ export default StyleSheet.create({
     input:{
         padding:0,
         fontSize:16,
-        color:colors.text
+        color:colors.text,
+        paddingVertical:10, 
     },
     iconSearch:{
         color:colors.searchBarIcon,
