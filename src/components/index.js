@@ -6,6 +6,7 @@ import TextInput from './TextInput';
 import SearchBar from './SearchBar';
 import ProgressiveImage from './ProgressiveImage';
 import InfoBox from './InfoBox';
+import LottieLoader from './LottieLoader';
 
 export {
     Container,
@@ -16,4 +17,5 @@ export {
     SearchBar,
     ProgressiveImage,
     InfoBox,
+    LottieLoader,
 }
