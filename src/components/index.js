@@ -7,6 +7,7 @@ import SearchBar from './SearchBar';
 import ProgressiveImage from './ProgressiveImage';
 import InfoBox from './InfoBox';
 import LottieLoader from './LottieLoader';
+import LoaderModal from './LoaderModal';
 
 export {
     Container,
@@ -18,4 +19,5 @@ export {
     ProgressiveImage,
     InfoBox,
     LottieLoader,
+    LoaderModal,
 }
