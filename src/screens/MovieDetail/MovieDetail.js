@@ -6,10 +6,14 @@ import styles from './MovieDetail.style';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
+import { useDispatch, useSelector } from 'react-redux';
+import { storage } from '../../utils';
+import { addMovie, setMovieList } from '../../store/actions/MovieListAction';
 
 const MovieDetail = ({ route, navigation }) => {
     const { width, height } = Dimensions.get('window');
     const { bottom } = useSafeAreaInsets();
+    const dispatch = useDispatch();
 
     const id = route.params.movieId;
     const name = route.params.movieName;
@@ -18,18 +22,57 @@ const MovieDetail = ({ route, navigation }) => {
     const [loading, setLoading] = useState(true);
     const [readMore, setReadMore] = useState(false);
     const [showImage, setShowImage] = useState(false);
+    const movieList = useSelector((state) => state.MovieListReducer.MovieList);
 
 
     useEffect(() => {
-        getMovieDetail();
+        checkMovieIsExist();
     }, []);
+
+    const checkMovieIsExist = async () => {
+        try {
+            const movie = findMovie(movieList);
+            if (movie) {
+                setMovieDetail(movie);
+            } else {
+                const localMovieList = await storage.getMovieList();
+                const localMovie = findMovie(localMovieList);
+                if (localMovie) {
+                    setMovieDetail(localMovie);
+                    dispatch(setMovieList(localMovieList));
+                } else {
+                    await getMovieDetail();
+                }
+            }
+        } catch (error) {
+        } finally{
+            setLoading(false);
+        }
+
+
+    };
+
+    const addMovieToLists = (movie) => {
+        storage.setMovieList([...movieList, movie]);
+        dispatch(addMovie(movie));
+        return;
+    }
+
+    const findMovie = (movieList) => {
+        if(!movieList || !movieList.length) return null;
+        const movie = movieList.find((movie) => {
+            
+            return movie.imdbID === id
+        });
+        return movie;
+    }
 
     const getMovieDetail = async () => {
         const res = await fetchMovieDetail({ id });
         if (res.status === 200) {
+            addMovieToLists(res.data);
             setMovieDetail(res.data);
         }
-        setLoading(false);
     };
 
     const onPressBack = () => {
