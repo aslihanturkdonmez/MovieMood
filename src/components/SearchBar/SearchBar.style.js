@@ -1,19 +1,19 @@
 import { StyleSheet } from 'react-native';
+import colors from '../../resources/colors/colors';
 
 export default StyleSheet.create({
     container:{
-        backgroundColor:'#f2f2f2',
+        backgroundColor:colors.background,
+        marginTop:10,
+        marginBottom:20,
     },
     innerContainer:{
         alignItems:'center', 
         flexDirection:'row', 
-        borderWidth:1, 
-        borderColor:'#cecece', 
-        paddingVertical:6, 
+        paddingVertical:10, 
         borderRadius:12, 
         paddingHorizontal:12, 
-        marginBottom:10, 
-        backgroundColor:'#f2f2f2', 
+        backgroundColor:colors.searhBar, 
         marginHorizontal:8,
     },
     inputContainer:{
@@ -23,16 +23,24 @@ export default StyleSheet.create({
     },
     input:{
         padding:0,
+        fontSize:16,
+        color:colors.text
+    },
+    iconSearch:{
+        color:colors.searchBarIcon,
+        fontSize:24,
+        paddingHorizontal:5,
     },
     icon:{
-
+        color:colors.searchBarText,
+        fontSize:22,
     },
     line:{
         height:25,
         backgroundColor:'black', 
         width:1, 
         marginHorizontal:10,
-        backgroundColor:'#666'
+        backgroundColor:colors.searchBarLine,
     },
 
 })

@@ -3,6 +3,7 @@ import React from 'react';
 import TextInput from '../TextInput';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './SearchBar.style';
+import colors from '../../resources/colors/colors';
 
 const SearchBar = ({ onChangeText, style, value, inputPlaceHolder, onPress }) => {
     return (
@@ -10,8 +11,7 @@ const SearchBar = ({ onChangeText, style, value, inputPlaceHolder, onPress }) =>
             <View style={styles.innerContainer}>
                 <Icon
                     name={'movie-search-outline'}
-                    size={22}
-                    style={{color:'#a2a2a2'}}
+                    style={styles.icon}
                 />
                 <View style={styles.inputContainer}>
                     <TextInput
@@ -21,14 +21,14 @@ const SearchBar = ({ onChangeText, style, value, inputPlaceHolder, onPress }) =>
                         placeholder={inputPlaceHolder}
                         returnKeyType='search'
                         onSubmitEditing={onPress}
-                        placeholderTextColor='#666'
+                        placeholderTextColor={colors.searchBarText}
                     />
                 </View>
                 <View style={styles.line} />
                 <Icon 
                     name='magnify'
-                    size={22}
                     onPress={onPress}
+                    style={styles.iconSearch}
                 />
             </View>
         </View>
