@@ -35,7 +35,7 @@ const Home = ({navigation}) => {
         } else {
           setMovies([...movies, ...res.data.Search]);
         }
-      }else if(page > 1){
+      }else if(page > 1 && search !=""){
         setReachEnd(true);
       }else{
         setMovies([]);
