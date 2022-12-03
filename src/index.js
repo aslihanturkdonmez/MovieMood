@@ -1,10 +1,14 @@
 import { View, Text } from 'react-native'
 import React from 'react';
 import Navigator from './Navigator';
+import { Provider } from 'react-redux';
+import store from './store';
 
 const App = () => {
   return (
-    <Navigator />
+    <Provider store={store}>
+      <Navigator />
+    </Provider>
   )
 }
 
