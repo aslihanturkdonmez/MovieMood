@@ -101,6 +101,8 @@ const Home = ({navigation}) => {
     )
   };
 
+  const keyExtractor = (item) => item.imdbID;
+
   const renderLoader = () => {
     return (
       <LoaderModal visible={searchLoading || loading} />
@@ -115,6 +117,7 @@ const Home = ({navigation}) => {
       <FlatList
         data={movies}
         renderItem={renderItem}
+        keyExtractor={keyExtractor}
         ListEmptyComponent={renderListEmptyComponent}
         contentContainerStyle={styles.listContainer}
         ItemSeparatorComponent={renderItemSeparator}
