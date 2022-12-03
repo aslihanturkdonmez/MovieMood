@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, View, ActivityIndicator } from 'react-native';
 import { ResponseStatus } from '../../resources/enums'
-import { Container, Header, MovieCard, SearchBar, Text } from '../../components';
+import { Container, Header, LoaderModal, MovieCard, SearchBar, Text } from '../../components';
 import { fetchMovies } from '../../services/Movie';
 import styles from './Home.style';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Home = ({navigation}) => {
   const { bottom } = useSafeAreaInsets();
+
   const [searchText, setSearchText] = useState("");
   const [pageNo, setPageNo] = useState(1);
   const [movies, setMovies] = useState([]);
@@ -17,6 +18,7 @@ const Home = ({navigation}) => {
   const [lastSearchedMovie, setLastSearchedMovie] = useState(null);
   const [searchMovie, setSearchMovie] = useState("");
   const [reachEnd, setReachEnd] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false);
 
   useEffect(() => {
       getMovies({});
@@ -58,11 +60,13 @@ const Home = ({navigation}) => {
     getMovies({page: pageNo+1});
   }
 
-  const onPressSearch = () => {
+  const onPressSearch = async () => {
     if (lastSearchedMovie === searchText) return;
+    setSearchLoading(true);
     setSearchMovie(searchText);
     setPageNo(1);
-    getMovies({refreshState:true, search:searchText, page:1});
+    await getMovies({refreshState:true, search:searchText, page:1});
+    setSearchLoading(false);
   }
 
   const onPressMovie = (movieId, movieName) => {
@@ -90,15 +94,16 @@ const Home = ({navigation}) => {
       <View style={[styles.footerContainer, { paddingVertical: Math.max(12, bottom) }]}>
         {
           footerLoader && movies.length > 10 ?
-            <ActivityIndicator size={'small'} color='black' />
+            <ActivityIndicator size={'small'} color='white' />
             : null
         }
-        {
-          movies.length && !footerLoader ?
-          <Text>You have viewed all results.</Text>
-          : null
-        }
       </View>
+    )
+  };
+
+  const renderLoader = () => {
+    return (
+      <LoaderModal visible={searchLoading || loading} />
     )
   }
 
@@ -131,7 +136,7 @@ const Home = ({navigation}) => {
         ListFooterComponent={renderListFooterComponent}
         style={styles.list}
       />
-
+      {renderLoader()}
     </Container>
   )
 }
