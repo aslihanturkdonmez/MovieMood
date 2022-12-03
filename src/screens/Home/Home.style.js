@@ -5,7 +5,7 @@ export default StyleSheet.create({
         marginHorizontal:12, 
     },
     itemSeparator:{
-        height:12,
+        height:15,
     },
     list:{ 
         flex: 1 

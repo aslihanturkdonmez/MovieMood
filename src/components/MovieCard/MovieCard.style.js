@@ -6,7 +6,6 @@ export default StyleSheet.create({
     },
     innerContainer:{
         flexDirection:'row',
-        marginTop:10,
         backgroundColor:'rgba(34,44,80,0.5)',
         borderRadius:8,
         marginHorizontal:10, 
