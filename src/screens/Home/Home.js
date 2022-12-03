@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, View, ActivityIndicator } from 'react-native';
+import { FlatList, View, ActivityIndicator, Dimensions } from 'react-native';
 import { ResponseStatus } from '../../resources/enums'
 import { Container, Header, LoaderModal, MovieCard, SearchBar, Text } from '../../components';
 import { fetchMovies } from '../../services/Movie';
@@ -79,8 +79,16 @@ const Home = ({navigation}) => {
 
   const renderListEmptyComponent = () => {
     return (
-      <View>
-        <Text>{'No movies found.\nYou must search first.'}</Text>
+      <View style={styles.emptyContainer}>
+        <View style={styles.emptyInnerContainer}>
+          <Text style={styles.emptyListText}>Couldn't find anything to list.</Text>
+          {
+            searchMovie == "" ?
+            <Text style={styles.emptyListTextBold}>You should search first.</Text>
+            :
+            <Text style={styles.emptyListTextBold}>Search something else.</Text>
+          }
+        </View>
       </View>
     )
   }
@@ -138,6 +146,7 @@ const Home = ({navigation}) => {
         stickyHeaderHiddenOnScroll={true}
         ListFooterComponent={renderListFooterComponent}
         style={styles.list}
+        onEndReachedThreshold={0}
       />
       {renderLoader()}
     </Container>
