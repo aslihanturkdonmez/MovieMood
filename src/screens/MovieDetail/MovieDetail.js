@@ -75,7 +75,7 @@ const MovieDetail = ({ route, navigation }) => {
                 <Pressable style={styles.imgModalBack} onPress={toggleImgModalVisibility}>
                     <FastImage
                         source={{ uri: movieDetail.Poster }}
-                        style={{ width: width, height }}
+                        style={{ width, height }}
                         resizeMode='contain'
                     />
                 </Pressable>
