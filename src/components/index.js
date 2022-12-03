@@ -5,6 +5,7 @@ import MovieCard from './MovieCard';
 import TextInput from './TextInput';
 import SearchBar from './SearchBar';
 import ProgressiveImage from './ProgressiveImage';
+import InfoBox from './InfoBox';
 
 export {
     Container,
@@ -14,4 +15,5 @@ export {
     TextInput,
     SearchBar,
     ProgressiveImage,
+    InfoBox,
 }
