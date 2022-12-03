@@ -7,7 +7,7 @@ import ProgressiveImage from '../ProgressiveImage';
 const MovieCard = ({ movie, onPressMovie }) => {
 
   return (
-    <TouchableWithoutFeedback style={styles.container} onPress={() =>onPressMovie(movie.imdbID)}>
+    <TouchableWithoutFeedback style={styles.container} onPress={() =>onPressMovie(movie.imdbID, movie.Title)}>
       <View style={styles.innerContainer}>
         <ProgressiveImage
           source={{ uri: movie.Poster }}
