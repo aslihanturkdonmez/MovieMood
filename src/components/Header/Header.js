@@ -18,7 +18,7 @@ const Header = ({ header, containerStyle, headerStyle, onPressBack }) => {
                 : 
                 <View style={styles.icon} />
             }
-            <Text style={[styles.header, headerStyle]}>{header}</Text>
+            <Text style={[styles.header, headerStyle]} numberOfLines={1}>{header}</Text>
             <View style={styles.icon} />
         </View>
     )

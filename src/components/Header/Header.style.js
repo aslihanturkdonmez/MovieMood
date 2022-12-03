@@ -17,10 +17,11 @@ export default StyleSheet.create({
         fontSize:20,
         fontWeight:'bold',
         color:colors.title,
+        paddingHorizontal:25,
     },
     icon:{
         width:20, 
         fontSize:20,
-        color:colors.backIcon
+        color:colors.backIcon,
     },
 })
