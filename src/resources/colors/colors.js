@@ -12,5 +12,7 @@ export default {
     movieDetailWriter:'#686f87',
     movieDetailDesc:'#a7abbe',
     infoBox:'#222c50',
+    transparentGray:'rgba(6, 6, 6, 0.6)',
+    transparentDarkGray:'rgba(6, 6, 6, 0.8)',
 
 }
