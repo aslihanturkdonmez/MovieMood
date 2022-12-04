@@ -8,6 +8,7 @@ import ProgressiveImage from './ProgressiveImage';
 import InfoBox from './InfoBox';
 import LottieLoader from './LottieLoader';
 import LoaderModal from './LoaderModal';
+import HorizontalList from './HorizontalList';
 
 export {
     Container,
@@ -20,4 +21,5 @@ export {
     InfoBox,
     LottieLoader,
     LoaderModal,
+    HorizontalList,
 }
