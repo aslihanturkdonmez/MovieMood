@@ -25,6 +25,7 @@ const MovieDetail = ({ route, navigation }) => {
     const [showImage, setShowImage] = useState(false);
     const movieList = useSelector((state) => state.MovieListReducer.MovieList);
     const [localMovieList, setLocalMovieList] = useState(movieList);
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         getMovie();
@@ -53,6 +54,7 @@ const MovieDetail = ({ route, navigation }) => {
                 }
             }
         } catch (error) {
+            setError(true);
         } finally{
             setLoading(false);
         }
@@ -77,6 +79,8 @@ const MovieDetail = ({ route, navigation }) => {
         if (res.status === 200) {
             addMovieToLists(res.data);
             setMovieDetail(res.data);
+        }else{
+            setError(true);
         }
     };
 
@@ -178,14 +182,19 @@ const MovieDetail = ({ route, navigation }) => {
         )
     }
 
-
     return (
         <Container>
             <Header
                 header={name}
                 onPressBack={onPressBack}
             />
-                { loading ?
+            {
+                error ? 
+                <View style={styles.errorContainer}>
+                    <Text style={styles.errorText}>{'There is a problem.\nPlease try again.'}</Text>
+                </View>
+                :
+                loading ?
                     <LoaderModal visible={loading} />
                     :
                     <>

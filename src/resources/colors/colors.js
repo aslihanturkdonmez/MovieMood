@@ -16,5 +16,8 @@ export default {
     transparentDarkGray:'rgba(6, 6, 6, 0.8)',
     emptyListBg:'#a7abbe',
     emptyListText:'#000',
+    collapseInnerContainer:'#0e153f',
+    errorContainer:'#a7abbe',
+    errorText:'#000',
 
 }

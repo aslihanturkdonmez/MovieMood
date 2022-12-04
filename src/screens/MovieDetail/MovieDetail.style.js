@@ -93,7 +93,20 @@ export default StyleSheet.create({
     collapseInnerContainer:{ 
         paddingHorizontal: 22, 
         paddingVertical: 10, 
-        backgroundColor: '#0e153f', 
+        backgroundColor: colors.collapseInnerContainer, 
         borderRadius:8, 
     },
+    errorContainer:{
+        flex:1, 
+        alignItems:'center', 
+        justifyContent:'center', 
+    },
+    errorText:{
+        paddingVertical:20, 
+        paddingHorizontal:30, 
+        backgroundColor:colors.errorContainer, 
+        color:colors.errorText,
+        fontWeight:'bold', 
+        textAlign:'center',
+    }
 })
