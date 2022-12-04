@@ -218,7 +218,7 @@ const Home = ({navigation}) => {
             onRefresh={onRefresh}
             refreshing={refreshLoading}
             tintColor={'#fff'}
-            colors={'#fff'}
+            colors={['#000']}
           />
         }
       />
