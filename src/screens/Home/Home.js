@@ -55,7 +55,7 @@ const Home = ({navigation}) => {
       }else if(page > 1 && search !=""){
         setReachEnd(true);
       }else{
-        onError();
+          setMovies([]);
       }
     }else{
      onError();
