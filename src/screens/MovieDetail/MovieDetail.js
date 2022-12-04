@@ -130,13 +130,18 @@ const MovieDetail = ({ route, navigation }) => {
             {
                 icon: 'calendar',
                 text: movieDetail.Released
-            }];
+            },
+            {
+                icon:'vote',
+                text: movieDetail.imdbVotes != ResponseValueStatus.none ? `${movieDetail.imdbVotes} Votes` : null
+            }
+        ];
         return (
             <View style={styles.infoIconContainer}>
                 {
                     infoTextValues.map(({ text, icon }, index) => {
                         return (
-                            text != ResponseValueStatus.none ?
+                            text && text != ResponseValueStatus.none ?
                                 <View style={styles.infoIconInnerContainer} key={index.toString()}>
                                     <Icon
                                         name={icon}
@@ -167,11 +172,12 @@ const MovieDetail = ({ route, navigation }) => {
     };
 
     const InfoBoxes = () => {
-        const infoBoxValues = [movieDetail.Year, movieDetail.Country, movieDetail.Runtime, movieDetail.imdbVotes];
+        const rate = movieDetail.Rating != ResponseValueStatus.none ? `${movieDetail.imdbRating}/10` : null
+        const infoBoxValues = [movieDetail.Year, movieDetail.Country, movieDetail.Runtime, rate];
         return (
             infoBoxValues.map((value, index) => {
                 return (
-                    value !== ResponseValueStatus.none ? 
+                    value && value !== ResponseValueStatus.none ? 
                     <InfoBox
                         key={index.toString()}
                         text={value}
