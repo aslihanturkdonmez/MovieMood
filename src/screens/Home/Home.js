@@ -27,6 +27,7 @@ const Home = ({navigation}) => {
   
   const [recentlyViewedMovies, setRecentlyViewedMovies] = useState(movieList);
   const [hideRecentlyViewedList, setHideRecentlyViewedList] = useState(false);
+  const [error, setError] = useState(false);
 
   const dispatch =  useDispatch();
 
@@ -54,14 +55,20 @@ const Home = ({navigation}) => {
       }else if(page > 1 && search !=""){
         setReachEnd(true);
       }else{
-        setMovies([]);
+        onError();
       }
     }else{
-      setMovies([]);
+     onError();
     }
     setFooterLoader(false);
     setLoading(false);
   };
+
+  const onError = () => {
+    setLastSearchedMovie(null);
+    setError(true);
+    setReachEnd(true);
+  }
 
   const getMovieList = async() => {
     if(!movieList.length){
@@ -108,13 +115,21 @@ const Home = ({navigation}) => {
     return (
       <View style={styles.emptyContainer}>
         <View style={styles.emptyInnerContainer}>
-          <Text style={styles.emptyListText}>Couldn't find anything to list.</Text>
           {
-            searchMovie == "" ?
-            <Text style={styles.emptyListTextBold}>You should search first.</Text>
-            :
-            <Text style={styles.emptyListTextBold}>Search something else.</Text>
+            error ?
+              <Text style={styles.emptyListTextBold}>{'There is a problem.\nPlease try again.'}</Text>
+              :
+              <>
+                <Text style={styles.emptyListText}>Couldn't find anything to list.</Text>
+                {
+                  searchMovie == "" ?
+                    <Text style={styles.emptyListTextBold}>You should search first.</Text>
+                    :
+                    <Text style={styles.emptyListTextBold}>Search something else.</Text>
+                }
+              </>
           }
+
         </View>
       </View>
     )
