@@ -212,7 +212,7 @@ const Home = ({navigation}) => {
         ListHeaderComponent={ListHeaderComponent()} 
         ListFooterComponent={renderListFooterComponent}
         style={styles.list}
-        onEndReachedThreshold={0.2}
+        onEndReachedThreshold={0.6}
         refreshControl={
           <RefreshControl 
             onRefresh={onRefresh}
