@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { FlatList, View, ActivityIndicator, Pressable } from 'react-native';
+import { FlatList, View, ActivityIndicator, Pressable, RefreshControl } from 'react-native';
 import { ResponseStatus } from '../../resources/enums'
 import { Container, Header, HorizontalList, LoaderModal, MovieCard, ProgressiveImage, SearchBar, Text } from '../../components';
 import { fetchMovies } from '../../services/Movie';
@@ -194,12 +194,18 @@ const Home = ({navigation}) => {
         numColumns={1}
         showsVerticalScrollIndicator={false}
         onEndReached={onEndReached}
-        onRefresh={onRefresh}
-        refreshing={refreshLoading}
         ListHeaderComponent={ListHeaderComponent()} 
         ListFooterComponent={renderListFooterComponent}
         style={styles.list}
         onEndReachedThreshold={0.2}
+        refreshControl={
+          <RefreshControl 
+            onRefresh={onRefresh}
+            refreshing={refreshLoading}
+            tintColor={'#fff'}
+            colors={'#fff'}
+          />
+        }
       />
       {renderLoader()}
     </Container>
