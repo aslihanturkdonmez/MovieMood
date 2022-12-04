@@ -5,9 +5,10 @@ import { Container, Header, HorizontalList, LoaderModal, MovieCard, ProgressiveI
 import { fetchMovies } from '../../services/Movie';
 import styles from './Home.style';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import { storage } from '../../utils';
+import { setMovieList } from '../../store/actions/MovieListAction';
 
 const Home = ({navigation}) => {
   const { bottom } = useSafeAreaInsets();
@@ -26,6 +27,8 @@ const Home = ({navigation}) => {
   
   const [recentlyViewedMovies, setRecentlyViewedMovies] = useState(movieList);
   const [hideRecentlyViewedList, setHideRecentlyViewedList] = useState(false);
+
+  const dispatch =  useDispatch();
 
   useEffect(() => {
       getMovies({});
@@ -64,6 +67,7 @@ const Home = ({navigation}) => {
     if(!movieList.length){
       const list = await storage.getMovieList();
       if(!list) return;
+      dispatch(setMovieList(list));
       setRecentlyViewedMovies(list);
     }else{
       setRecentlyViewedMovies(movieList);
