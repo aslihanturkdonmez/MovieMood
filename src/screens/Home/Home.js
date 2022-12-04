@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, View, ActivityIndicator, Dimensions } from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { FlatList, View, ActivityIndicator, Pressable } from 'react-native';
 import { ResponseStatus } from '../../resources/enums'
-import { Container, Header, LoaderModal, MovieCard, SearchBar, Text } from '../../components';
+import { Container, Header, HorizontalList, LoaderModal, MovieCard, ProgressiveImage, SearchBar, Text } from '../../components';
 import { fetchMovies } from '../../services/Movie';
 import styles from './Home.style';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSelector } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
+import { storage } from '../../utils';
 
 const Home = ({navigation}) => {
   const { bottom } = useSafeAreaInsets();
+  const movieList = useSelector((state) => state.MovieListReducer.MovieList);
 
   const [searchText, setSearchText] = useState("");
   const [pageNo, setPageNo] = useState(1);
@@ -19,10 +23,19 @@ const Home = ({navigation}) => {
   const [searchMovie, setSearchMovie] = useState("");
   const [reachEnd, setReachEnd] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
+  
+  const [recentlyViewedMovies, setRecentlyViewedMovies] = useState(movieList);
+  const [hideRecentlyViewedList, setHideRecentlyViewedList] = useState(false);
 
   useEffect(() => {
       getMovies({});
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      getMovieList();
+    }, [movieList])
+  );
 
   const getMovies = async ({refreshState = false, search = searchMovie , page = pageNo}) => {
     setReachEnd(false);
@@ -45,6 +58,16 @@ const Home = ({navigation}) => {
     }
     setFooterLoader(false);
     setLoading(false);
+  };
+
+  const getMovieList = async() => {
+    if(!movieList.length){
+      const list = await storage.getMovieList();
+      if(!list) return;
+      setRecentlyViewedMovies(list);
+    }else{
+      setRecentlyViewedMovies(movieList);
+    }
   }
 
   const onRefresh = async () => {
@@ -109,6 +132,41 @@ const Home = ({navigation}) => {
     )
   };
 
+  const renderRecentlyViewedMovieItem = ({item}) => {
+    return (
+      <Pressable onPress={() => onPressMovie(item.imdbID, item.Title)}>
+        <ProgressiveImage source={{uri: item.Poster}} style={{width:90, height:135, borderRadius:8}} />
+      </Pressable>
+    )
+  }
+
+  const toggleRecentlyViewedVisibility = () => {
+    setHideRecentlyViewedList(!hideRecentlyViewedList);
+  }
+
+  const ListHeaderComponent = () => {
+    return (
+      <View>
+          <SearchBar
+            inputPlaceHolder={'Search Movies, Series...'}
+            onChangeText={setSearchText}
+            onPress={onPressSearch}
+            value={searchText}
+          />
+        {
+          recentlyViewedMovies.length && !hideRecentlyViewedList ?
+            <HorizontalList 
+              list={recentlyViewedMovies}
+              header={'Recently viewed'}
+              renderItem={renderRecentlyViewedMovieItem}
+              onPressClose={toggleRecentlyViewedVisibility}
+            />
+            : null
+        }
+      </View>
+    )
+  }
+
   const keyExtractor = (item) => item.imdbID;
 
   const renderLoader = () => {
@@ -134,19 +192,10 @@ const Home = ({navigation}) => {
         onEndReached={onEndReached}
         onRefresh={onRefresh}
         refreshing={refreshLoading}
-        ListHeaderComponent={
-          SearchBar({
-            inputPlaceHolder: 'Search Movie, Serie...',
-            onChangeText: setSearchText,
-            onPress: onPressSearch,
-            value: searchText,
-          })
-        }
-        stickyHeaderIndices={[0]}
-        stickyHeaderHiddenOnScroll={true}
+        ListHeaderComponent={ListHeaderComponent()} 
         ListFooterComponent={renderListFooterComponent}
         style={styles.list}
-        onEndReachedThreshold={0}
+        onEndReachedThreshold={0.2}
       />
       {renderLoader()}
     </Container>
