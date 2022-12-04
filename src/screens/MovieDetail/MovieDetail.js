@@ -24,22 +24,30 @@ const MovieDetail = ({ route, navigation }) => {
     const [showMore, setShowMore] = useState(false);
     const [showImage, setShowImage] = useState(false);
     const movieList = useSelector((state) => state.MovieListReducer.MovieList);
+    const [localMovieList, setLocalMovieList] = useState(movieList);
 
     useEffect(() => {
-        checkMovieIsExist();
+        getMovie();
     }, []);
 
-    const checkMovieIsExist = async () => {
+    useEffect(() => {
+        setLocalMovieList(movieList);
+    }, [movieList])
+    
+
+    const getMovie = async () => {
         try {
             const movie = findMovie(movieList);
             if (movie) {
                 setMovieDetail(movie);
             } else {
-                const localMovieList = await storage.getMovieList();
-                const localMovie = findMovie(localMovieList);
+                const localList = await storage.getMovieList();
+                const localMovie = findMovie(localList);
+                if(localList && !localMovieList.length) {
+                    dispatch(setMovieList(localList));
+                }
                 if (localMovie) {
                     setMovieDetail(localMovie);
-                    dispatch(setMovieList(localMovieList));
                 } else {
                     await getMovieDetail();
                 }
@@ -53,17 +61,14 @@ const MovieDetail = ({ route, navigation }) => {
     };
 
     const addMovieToLists = (movie) => {
-        storage.setMovieList([...movieList, movie]);
+        storage.setMovieList([...localMovieList, movie]);
         dispatch(addMovie(movie));
         return;
     }
 
     const findMovie = (movieList) => {
         if(!movieList || !movieList.length) return null;
-        const movie = movieList.find((movie) => {
-            
-            return movie.imdbID === id
-        });
+        const movie = movieList.find((movie) => movie.imdbID === id);
         return movie;
     }
 
