@@ -14,6 +14,9 @@ export default StyleSheet.create({
         height:height / 2,  
         borderRadius:12, 
     }),
+    imgIcon:{
+        fontSize:45,
+    },
     detailContainer:{
         paddingHorizontal:20, 
         marginTop:-10,

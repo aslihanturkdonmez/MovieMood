@@ -9,4 +9,8 @@ export default StyleSheet.create({
     image: {
         position: 'absolute',
     },
+    icon:{
+        color:'#cecece',
+        fontSize:25,
+    }
 })
