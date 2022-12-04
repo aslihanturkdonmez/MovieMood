@@ -3,13 +3,13 @@ import { View, ActivityIndicator } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import styles from './ProgressiveImage.style';
 
-const ProgressiveImage = ({ source, style, resizeMode, containerStyle }) => {
+const ProgressiveImage = ({ source, style, resizeMode }) => {
     const [loading, setLoading] = useState(true);
 
     const onLoadEnd = () => setLoading(false);
 
     return (
-        <View style={[styles.container, containerStyle]}>
+        <View style={[styles.container, style]}>
             {loading ? <ActivityIndicator size="small" color="white" /> : null}
             <FastImage
                 source={source}

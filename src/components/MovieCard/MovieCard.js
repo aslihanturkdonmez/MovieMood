@@ -13,7 +13,6 @@ const MovieCard = ({ movie, onPressMovie }) => {
           source={{ uri: movie.Poster }}
           style={styles.img}
           resizeMode={'cover'}
-          containerStyle={styles.img}
         />
         <View style={styles.infoContainer}>
           <Text style={styles.title}>{movie.Title}</Text>

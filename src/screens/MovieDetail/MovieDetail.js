@@ -140,7 +140,6 @@ const MovieDetail = ({ route, navigation }) => {
                         <Pressable onPress={onPressImage} style={styles.imgContainer}>
                             <ProgressiveImage
                                 source={{ uri: movieDetail.Poster }}
-                                containerStyle={styles.img({ width, height })}
                                 style={styles.img({ width, height })}
                             />
                         </Pressable>
