@@ -9,6 +9,7 @@ import FastImage from 'react-native-fast-image';
 import { useDispatch, useSelector } from 'react-redux';
 import { storage } from '../../utils';
 import { addMovie, setMovieList } from '../../store/actions/MovieListAction';
+import { ResponseValueStatus } from '../../resources/enums';
 
 const MovieDetail = ({ route, navigation }) => {
     const { width, height } = Dimensions.get('window');
@@ -20,10 +21,9 @@ const MovieDetail = ({ route, navigation }) => {
 
     const [movieDetail, setMovieDetail] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [readMore, setReadMore] = useState(false);
+    const [showMore, setShowMore] = useState(false);
     const [showImage, setShowImage] = useState(false);
     const movieList = useSelector((state) => state.MovieListReducer.MovieList);
-
 
     useEffect(() => {
         checkMovieIsExist();
@@ -84,30 +84,61 @@ const MovieDetail = ({ route, navigation }) => {
     };
 
     const onPressImage = () => {
-        if (!readMore) {
+        if (!showMore) {
             setShowImage(true);
         } else {
-            setReadMore(!readMore);
+            setShowMore(!showMore);
         }
     };
 
     const onMomentumScrollBegin = (event) => {
         const offsetY = event.nativeEvent.contentOffset.y;
-        if (offsetY > 0) setReadMore(true);
+        if (offsetY > 0) setShowMore(true);
     };
 
     const onPressCollapse = () => {
-        setReadMore(false);
+        setShowMore(false);
     };
 
-    const InfoIconText = ({ icon, text }) => {
+    const InfoIconTextBox = () => {
+        const infoTextValues = [
+            {
+                icon: 'movie-open',
+                text: movieDetail.Director
+            },
+            {
+                icon: 'grease-pencil',
+                text: movieDetail.Writer,
+            },
+            {
+                icon: 'human-male-male',
+                text: movieDetail.Actors,
+            },
+            {
+                icon: 'trophy-award',
+                text: movieDetail.Awards,
+            },
+            {
+                icon: 'calendar',
+                text: movieDetail.Released
+            }];
         return (
-            <View style={styles.infoIconInnerContainer}>
-                <Icon
-                    name={icon}
-                    style={styles.infoIcon}
-                />
-                <Text style={styles.infoText} >{text}</Text>
+            <View style={styles.infoIconContainer}>
+                {
+                    infoTextValues.map(({ text, icon }, index) => {
+                        return (
+                            text != ResponseValueStatus.none ?
+                                <View style={styles.infoIconInnerContainer} key={index.toString()}>
+                                    <Icon
+                                        name={icon}
+                                        style={styles.infoIcon}
+                                    />
+                                    <Text style={styles.infoText} >{text}</Text>
+                                </View>
+                                : null
+                        )
+                    })
+                }
             </View>
         )
     };
@@ -125,6 +156,22 @@ const MovieDetail = ({ route, navigation }) => {
             </Modal>
         )
     };
+
+    const InfoBoxes = () => {
+        const infoBoxValues = [movieDetail.Year, movieDetail.Country, movieDetail.Runtime, movieDetail.imdbVotes];
+        return (
+            infoBoxValues.map((value, index) => {
+                return (
+                    value !== ResponseValueStatus.none ? 
+                    <InfoBox
+                        key={index.toString()}
+                        text={value}
+                    />
+                    : null
+                )
+            })
+        )
+    }
 
 
     return (
@@ -145,8 +192,7 @@ const MovieDetail = ({ route, navigation }) => {
                             />
                         </Pressable>
 
-                        <View style={[styles.detailContainer, { flex: readMore ? 2.2 : 1.1 }]}
-                        >
+                        <View style={[styles.detailContainer, { flex: showMore ? 2.2 : 1.1 }]}>
                             <ScrollView
                                 showsVerticalScrollIndicator={false}
                                 onMomentumScrollBegin={onMomentumScrollBegin}
@@ -158,51 +204,22 @@ const MovieDetail = ({ route, navigation }) => {
                                         <Text style={styles.type}>{movieDetail.Type.toUpperCase()}</Text>
                                         <Text style={styles.title}>{movieDetail.Title}</Text>
                                         <Text style={styles.genre}>{movieDetail.Genre}</Text>
-                                        <View style={styles.infoIconContainer}>
-                                            <InfoIconText
-                                                icon='movie-open'
-                                                text={movieDetail.Director}
-                                            />
-                                            <InfoIconText
-                                                icon='grease-pencil'
-                                                text={movieDetail.Writer}
-                                            />
-                                            <InfoIconText
-                                                icon='human-male-male'
-                                                text={movieDetail.Actors}
-                                            />
-                                            <InfoIconText
-                                                icon='trophy-award'
-                                                text={movieDetail.Awards}
-                                            />
-                                            <InfoIconText
-                                                icon='calendar'
-                                                text={movieDetail.Released}
-                                            />
-                                        </View>
+
+                                        <InfoIconTextBox />
                                     </View>
                                     <View style={styles.descContainer}>
-                                        <Text style={styles.desc}>{movieDetail.Plot}</Text>
+                                        {
+                                            movieDetail.Plot !== ResponseValueStatus.none ?
+                                            <Text style={styles.desc}>{movieDetail.Plot}</Text>
+                                            : null
+                                        }
                                     </View>
                                     <View style={styles.infoBoxContainer}>
-                                        <InfoBox
-                                            text={movieDetail.Year}
-                                        />
-                                        {/*<InfoBox
-                                text={movieDetail.Country}
-                            /> */}
-
-                                        <InfoBox
-                                            text={movieDetail.imdbVotes + ' Votes'}
-                                        />
-                                        <InfoBox
-                                            text={movieDetail.Runtime}
-                                        />
-
+                                        <InfoBoxes />
                                     </View>
                                 </View>
                                 {
-                                    readMore &&
+                                    showMore &&
                                     <View style={styles.collapseContainer}>
                                         <Pressable onPress={onPressCollapse} style={styles.collapseInnerContainer}>
                                             <Text>Collapse...</Text>
